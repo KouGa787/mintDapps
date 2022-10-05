@@ -58,7 +58,8 @@ contract TokenFaucet {
     function withdraw(uint256 _amount) external onlyOwner {
         require(balance >= _amount, "Error: ");
         balance -= _amount;
-        payable(msg.sender).transfer(_amount);
+        (bool success, ) = payable(msg.sender).call{ value:_amount }("");
+        require(success, "Error: ");
     }
 
 }

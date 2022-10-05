@@ -36,10 +36,12 @@
 
         const mintToken = async () => {
             let amount = document.getElementById("amount");
-            let data = web3.utils.toWei(amount.value , 'ether');
+            amount = amount.value;
+
+            let data = web3.utils.toWei(amount, 'ether');
             data = web3.eth.abi.encodeParameter('uint256', data).slice(2);
 
-            let value = web3.utils.toWei(amount.value , 'milliether');
+            let value = web3.utils.toWei(amount, 'milliether');
             value = web3.utils.numberToHex(value);
             
             try{
@@ -47,7 +49,7 @@
                 method: 'eth_sendTransaction',
                 params: [{
                             from: accounts[0],
-                            to: '0xE37e9999F73F537FC4861664f4050fb3A00278e6',
+                            to: '0x3dbfD9614cc7DDbcb5d1Dbea8A57dC1cb7327951',
                             gasLimit: "21000",
                             data: '0xc634d032' + data,
                             chainId: '0x5',
