@@ -17,7 +17,6 @@
             if (typeof window.ethereum !== 'undefined') {
                 try {
                     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                    const chainId = await ethereum.request({ method: 'eth_chainId' });
                     web3 = await new Web3((new Web3.providers.HttpProvider("https://goerli.infura.io/v3/5dc5038272684c3e9b1cdd72e6e2c44f")));
                     await ethereum.request({ 
                         method: 'wallet_switchEthereumChain', 
@@ -37,21 +36,22 @@
 
         const mintToken = async () => {
             let amount = document.getElementById("amount");
-            value = web3.utils.toWei(amount.value , 'milliether')
+            let data = web3.utils.toWei(amount.value , 'ether');
+            data = web3.eth.abi.encodeParameter('uint256', data).slice(2);
+
+            let value = web3.utils.toWei(amount.value , 'milliether');
             value = web3.utils.numberToHex(value);
-            data = web3.eth.abi.encodeParameter('uint256', amount.value).slice(2);
             
             try{
                 await ethereum.request({
                 method: 'eth_sendTransaction',
                 params: [{
                             from: accounts[0],
-                            to: '0x1cf2Bdb43c42Ebf40c408f142fC09CF625fD4B16',
+                            to: '0xE37e9999F73F537FC4861664f4050fb3A00278e6',
                             gasLimit: "21000",
                             data: '0xc634d032' + data,
                             chainId: '0x5',
                             value: value,
-                            //value: "0x38d7ea4c68000",
                         },
                     ],});
             } catch{
